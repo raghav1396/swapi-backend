@@ -1,0 +1,67 @@
+spring:
+    application:
+        name: swapi
+    security:
+      user:
+        name: ${username}
+        password: ${password}
+    main:
+      banner-mode: off
+    config:
+      import: optional:aws-secretsmanager:/secrets/database-secrets
+
+swapi-client:
+    name: "star-wars-api"
+    base: "https://swapi.dev/api/"
+    people-path: "people"
+    film-path: "films"
+    starship-path: "starships"
+    specie-path: "species"
+    planet-path: "planets"
+    vehicle-path: "vehicles"
+
+# Feign Clients Config
+feign:
+  client:
+    config:
+      default:
+#        connectTimeout: 5000
+#        readTimeout: 3000
+        loggerLevel: BASIC
+        errorDecoder: com.example.swapi.feignClient.SwapiErrorDecoder
+
+springdoc:
+  api-docs:
+    title: My API
+    description: API description
+#    version: 1.0.0
+#    enabled: true
+  swagger-ui:
+    title: My API UI
+    path: /swagger-ui.html
+
+#server:
+#  error:
+#    include-stacktrace:never
+
+server:
+  error:
+    include-stacktrace: never
+
+
+info:
+  app:
+    name: 'Star Wars API'
+    description: 'api wrapper for star wars api'
+    version: '1.0.0'
+management:
+  info:
+    env:
+      enabled: true
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: 'health,info,prometheus'
